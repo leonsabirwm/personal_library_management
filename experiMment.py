@@ -5,30 +5,19 @@ def create_qr(text):
     img.save(f'qrCodes/{text}.png')
 
 create_qr("amm pata")"""
+from pymongo import MongoClient
 
-from barcode import EAN13
-from barcode.writer import ImageWriter
+client = MongoClient(
+    "mongodb+srv://plibrary23:raNPCBW9Rrxayhcd@cluster0.tssrqjh.mongodb.net/?retryWrites=true&w=majority")
+db = client['leosLibrary']
+collection = db['books']
+borrowing_collection = db['borrowings']
+# results = borrowing_collection.find({})
+results = collection.find({'borrowed':{"$type" : "string"}})
+
+book_list = list(results)
+print(book_list)
 #
-#
-def create_bar(number):
-    my_num = number + number + number
-    img = EAN13(my_num, writer=ImageWriter())
-    img.save(f'barcodes/{number}' + "sabirB")
+# for idx,book in enumerate(book_list):
+#     print(idx,'----------',book)
 
-create_bar('7896')
-import cv2
-from pyzbar.pyzbar import decode
-
-def get_data():
-    cam = cv2.VideoCapture(0, cv2.CAP_DSHOW)
-    scan_count = 1
-    while scan_count:
-        success, img = cam.read()
-        cv2.imshow("result", img)
-        cv2.waitKey(1)
-        for barcode in decode(img):
-            print('reading')
-            my_data = barcode.data.decode("utf-8")
-            return my_data
-
-print(get_data())

@@ -4,7 +4,7 @@ import time
 import numpy as np
 from pyzbar.pyzbar import decode
 import crudOperations
-from crudOperations import talk, get_command, add_book, lend_book, return_book
+from crudOperations import talk, get_command, add_book, lend_book, return_book,add_borrowing,omit_borrowing,display_book
 
 
 
@@ -55,6 +55,12 @@ def initializing():
             lend_book()
         elif 'return' in command:
             return_book()
+        if 'append' in command:
+            add_borrowing()
+        elif 'deduct' in command:
+            omit_borrowing()
+        elif 'display' in command:
+            display_book()
         else:
             talk("Pardon...Choice again precisely")
             initializing()
